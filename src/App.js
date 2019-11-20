@@ -30,8 +30,8 @@ class App extends React.Component {
       .get("https://insta.nextacademy.com/api/v1/users")
       .then(result => {
         this.setState({
-          users: [...result.data]
-          // loading: false
+          users: [...result.data],
+          loading: false
         });
       })
       .catch(error => console.log(error));
