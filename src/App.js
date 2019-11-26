@@ -27,11 +27,12 @@ class App extends React.Component {
 
     // Get all users data
     axios
-      .get("https://insta.nextacademy.com/api/v1/users")
+      .get("https://insta.nextacademy.com/api/v1/users") // default
+      // .get("http://localhost:5000/api/v1/users/show") // self-made (flask run nextagram API)
       .then(result => {
         this.setState({
-          users: [...result.data]
-          // loading: false
+          users: [...result.data],
+          loading: false
         });
       })
       .catch(error => console.log(error));
