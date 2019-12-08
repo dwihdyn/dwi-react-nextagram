@@ -1,17 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
 import "../App.css";
-import { Button, Form, FormControl } from "react-bootstrap";
-
-// const NavBar = () => {
-//   return (
-//     <nav className="navbar">
-//       <Link to="/"> Home </Link>
-//       <Link to="/users/2"> My Profile </Link>
-//       <Link to="/login"> Login </Link>
-//     </nav>
-//   );
-// };
 
 const TopNavBar = () => {
   return (
