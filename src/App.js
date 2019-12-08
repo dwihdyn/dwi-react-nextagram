@@ -15,44 +15,49 @@ class App extends React.Component {
   state = {
     users: [],
     loading: true,
-    currentUser: { loggedIn: false }
+    currentUser: { loggedIn: false },
+    setAlarm: false,
+    errorMessage: false
   };
 
   componentDidMount() {
-    let checkLoggedInOrNot = localStorage.getItem("userData");
-    if (checkLoggedInOrNot === true) {
-      checkLoggedInOrNot = JSON.parse(checkLoggedInOrNot);
+    // store all current user info into currentUser state
+    if (localStorage.getItem("userData")) {
       this.setState({
-        currentUser: { ...checkLoggedInOrNot, loggedIn: true }
+        currentUser: {
+          ...JSON.parse(localStorage.getItem("userData")),
+          loggedIn: true
+        }
       });
     }
 
     axios
       .get("https://insta.nextacademy.com/api/v1/users")
       // .get("http://localhost:5000/api/v1/users/show") // self-made (flask run nextagram API)
-      .then(result => {
+      .then(res => {
         this.setState({
-          users: [...result.data],
-          loading: false
+          users: [...res.data],
+          loading: false,
+          errorMessage: false
         });
       })
-      .catch(error => console.log(error));
+      .catch(err => console.log(err));
   }
 
-  loginUser = (username, password) => {
+  handleLogin = (username, password) => {
     axios
       .post("https://insta.nextacademy.com/api/v1/login", {
         username: username,
         password: password
       })
-      .then(result => {
-        let authToken = result.data.auth_token;
+      .then(res => {
+        let authToken = res.data.auth_token;
         localStorage.setItem("authToken", authToken);
-        localStorage.setItem("userData", JSON.stringify(result.data.user));
+        localStorage.setItem("userData", JSON.stringify(res.data.user));
 
         this.setState(
           {
-            currentUser: { ...result.data.user, loggedIn: true }
+            currentUser: { ...res.data.user, loggedIn: true }
           },
 
           () => {
@@ -60,8 +65,11 @@ class App extends React.Component {
           }
         );
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(err => {
+        console.log(err.response);
+        this.setState({
+          errorMessage: true
+        });
       });
   };
 
@@ -72,21 +80,21 @@ class App extends React.Component {
         email: newEmail,
         password: newPassWord
       })
-      .then(result => {
-        let authToken = result.data.auth_token;
+      .then(res => {
+        let authToken = res.data.auth_token;
         localStorage.setItem("authToken", authToken);
-        localStorage.setItem("userData", JSON.stringify(result.data.user));
+        localStorage.setItem("userData", JSON.stringify(res.data.user));
         this.setState(
           {
-            currentUser: { ...result.data.user, loggedIn: true }
+            currentUser: { ...res.data.user, loggedIn: true }
           },
           () => {
             this.props.history.push("/");
           }
         );
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(err => {
+        console.log(err.response);
       });
   };
 
@@ -99,15 +107,26 @@ class App extends React.Component {
     return (window.location = "/");
   };
 
+  clearError = e => {
+    this.setState({
+      error: e
+    });
+  };
+
   render() {
-    let { users, loading } = this.state;
+    let { users, loading, errorMessage } = this.state;
     if (loading) {
       return <Loader className="loading" alt="loading gif" />;
     }
 
     return (
       <>
-        <Navbar handleLogout={this.handleLogout} />
+        <Navbar
+          loggedIn={this.state.currentUser.loggedIn}
+          handleLogout={this.handleLogout}
+          errorMessage={errorMessage}
+          clearError={this.clearError}
+        />
         <div className="App-header">
           <Switch>
             <Route
@@ -132,7 +151,7 @@ class App extends React.Component {
                 <LoginPage
                   {...props}
                   signUpNewUser={this.signUpNewUser}
-                  loginUser={this.loginUser}
+                  handleLogin={this.handleLogin}
                 />
               )}
             />

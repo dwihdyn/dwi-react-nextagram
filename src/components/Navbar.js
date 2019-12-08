@@ -1,30 +1,51 @@
 import React from "react";
-import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
+import {
+  Navbar,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  UncontrolledAlert
+} from "reactstrap";
 import "../App.css";
 
-const NavBar = props => {
-  return (
-    <div className="top-navbar">
-      <Navbar>
-        <NavbarBrand href="/">Nextagram</NavbarBrand>
+class NavBar extends React.Component {
+  onDismiss = () => {
+    this.props.clearError(false);
+  };
 
-        <Nav>
-          <NavItem>
-            <NavLink href="/users/2">My Profile</NavLink>
-          </NavItem>
+  render() {
+    return (
+      <div className="top-navbar">
+        <Navbar>
+          <NavbarBrand href="/">Nextagram</NavbarBrand>
 
-          <NavItem>
-            {localStorage.getItem("authToken") ? (
-              <NavLink onClick={props.handleLogout} href="/">
-                Logout
-              </NavLink>
+          <Nav>
+            {this.props.loggedIn ? (
+              <>
+                <NavItem>
+                  <NavLink href="/users/2">My Profile</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink onClick={this.props.handleLogout} href="/">
+                    Logout
+                  </NavLink>
+                </NavItem>
+              </>
             ) : (
-              <NavLink href="/login">Login</NavLink>
+              <NavItem>
+                <NavLink href="/login">Login</NavLink>
+              </NavItem>
             )}
-          </NavItem>
-        </Nav>
-      </Navbar>
-    </div>
-  );
-};
+          </Nav>
+        </Navbar>
+        {this.props.errorMessage ? (
+          <UncontrolledAlert color="danger" toggle={this.onDismiss}>
+            Invalid credential. Please check your username/password{" "}
+          </UncontrolledAlert>
+        ) : null}
+      </div>
+    );
+  }
+}
 export default NavBar;

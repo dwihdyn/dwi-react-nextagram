@@ -1,7 +1,11 @@
 - branch out to development (done)
 - clean code (done)
-- clear ALL comment, bc i cant even read the code 
-- better naming convention to all states
+- clear ALL comment, bc i cant even read the code (done)
+- better naming convention to all states (done)
+
+
+
+- pop up warning when user type in non-existing user , tried using <UncontrolledAlert> reactstrap
 - proper signup -> login -> homepage (show all) -> your profile (blank)
 - able to upload picture
 

@@ -25,9 +25,9 @@ class UserProfilePage extends React.Component {
     });
     axios
       .get(`https://insta.nextacademy.com/api/v1/images?userId=${selUser}`)
-      .then(resultFromLink => {
+      .then(res => {
         this.setState({
-          images: resultFromLink.data
+          images: res.data
         });
       });
   }
