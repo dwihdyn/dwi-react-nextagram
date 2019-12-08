@@ -24,7 +24,7 @@ class NavBar extends React.Component {
             {this.props.loggedIn ? (
               <>
                 <NavItem>
-                  <NavLink href="/users/2">My Profile</NavLink>
+                  <NavLink href="/profile">My Profile</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink onClick={this.props.handleLogout} href="/">

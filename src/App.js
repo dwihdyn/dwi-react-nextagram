@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 import { ReactComponent as Loader } from "./Spinner-1s-200px.svg";
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
 
 import "./App.css";
 import HomePage from "./pages/HomePage";
@@ -10,6 +10,8 @@ import UserProfilePage from "./pages/UserProfilePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
+import MyProfilePage from "./pages/MyProfilePage";
+import PageNotFound from "./pages/PageNotFound";
 
 class App extends React.Component {
   state = {
@@ -155,6 +157,9 @@ class App extends React.Component {
                 />
               )}
             />
+            <Route path="/profile" component={() => <MyProfilePage />} />
+            <Route path="/whrUgoing" component={() => <PageNotFound />} />
+            <Redirect from="*" to="/whrUgoing" />
           </Switch>
         </div>
       </>
