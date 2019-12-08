@@ -1,15 +1,16 @@
 import React from "react";
 import { Container, Card, Row, Col } from "reactstrap";
+import { Link } from "react-router-dom";
+
 import UserImages from "../components/UserImages";
 import "../App.css";
 
 class HomePage extends React.Component {
   render() {
-    const { childUsers } = this.props;
-    // console.log(this);
+    const { users } = this.props;
     return (
       <>
-        {childUsers.map((user, index) => (
+        {users.map((user, index) => (
           <Container key={index}>
             <Card>
               <Row noGutters form>
@@ -19,7 +20,13 @@ class HomePage extends React.Component {
                     src={user.profileImage}
                     alt={user.username}
                   />
-                  <p className="each-user-name">{user.username} </p>
+                  <Link
+                    className="each-user-name"
+                    name={user.id}
+                    to={`/users/${user.id}`}
+                  >
+                    {user.username}{" "}
+                  </Link>
                 </Col>
                 <Col style={{ height: "300px" }}>
                   <UserImages userId={user.id} />

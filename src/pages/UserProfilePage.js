@@ -6,52 +6,41 @@ import Image from "react-graceful-image";
 class UserProfilePage extends React.Component {
   state = {
     images: [],
+    profilePic: ``,
     selectedUserName: ``,
     loading: true
   };
 
-  // load the selected user profile pic using API
   componentDidMount() {
-    // console.log(this.props);
-    const currentUser = this.props.match.params.id;
-    const allUsers = this.props.childUsers;
+    const selUser = this.props.match.params.id;
+    const allUsers = this.props.users;
     allUsers.forEach(oneUser => {
-      console.log(oneUser);
-      console.log(currentUser);
-      if (oneUser.id === parseInt(currentUser)) {
+      if (oneUser.id === parseInt(selUser)) {
         this.setState({
+          profilePic: oneUser.profileImage,
           selectedUserName: oneUser.username,
           loading: false
         });
       }
     });
     axios
-      .get(`https://insta.nextacademy.com/api/v1/images?userId=${currentUser}`)
+      .get(`https://insta.nextacademy.com/api/v1/images?userId=${selUser}`)
       .then(resultFromLink => {
-        console.log(resultFromLink); // good practice, to help visualise the output
         this.setState({
           images: resultFromLink.data
         });
-        // console.log(this.state);
       });
   }
 
   render() {
-    const { images, selectedUserName, loading } = this.state;
+    const { images, selectedUserName, loading, profilePic } = this.state;
 
     return (
       <>
-        {/* {console.log(this.props.childUsers[1].profileImage)} */}
-        {/* below hard code to user id `1` */}
-        <Image
-          className="w-25 w-25"
-          src={this.props.childUsers[1].profileImage}
-        />
+        <Image className="w-25 w-25" src={profilePic} />
         <h4>
           #{this.props.match.params.id} : {selectedUserName}{" "}
         </h4>
-
-        {/* since there are multiple images owned by every user, need to use .map */}
 
         {loading ? (
           <Loader alt="loading gif" />

@@ -93,6 +93,9 @@ class App extends React.Component {
   handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userData");
+    this.setState({
+      currentUser: { loggedIn: false }
+    });
     return (window.location = "/");
   };
 
@@ -112,7 +115,7 @@ class App extends React.Component {
               path="/"
               component={() => {
                 if (localStorage.getItem("authToken")) {
-                  return <HomePage childUsers={users} />;
+                  return <HomePage users={users} />;
                 } else {
                   return <LandingPage />;
                 }
@@ -120,9 +123,7 @@ class App extends React.Component {
             />
             <Route
               path="/users/:id"
-              component={props => (
-                <UserProfilePage childUsers={users} {...props} />
-              )}
+              component={props => <UserProfilePage users={users} {...props} />}
             />
 
             <Route
