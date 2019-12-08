@@ -1,12 +1,15 @@
 import React from "react";
 import axios from "axios";
-import "./App.css";
+
 import { ReactComponent as Loader } from "./Spinner-1s-200px.svg";
-import HomePage from "./pages/HomePage";
 import { Route, Switch, withRouter } from "react-router-dom";
+
+import "./App.css";
+import HomePage from "./pages/HomePage";
 import UserProfilePage from "./pages/UserProfilePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
+import LandingPage from "./pages/LandingPage";
 
 class App extends React.Component {
   state = {
@@ -16,7 +19,6 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    // Ensure current user still logged in when browser are refrshed/closed
     let checkLoggedInOrNot = localStorage.getItem("userData");
     if (checkLoggedInOrNot === true) {
       checkLoggedInOrNot = JSON.parse(checkLoggedInOrNot);
@@ -25,9 +27,8 @@ class App extends React.Component {
       });
     }
 
-    // Get all users data
     axios
-      .get("https://insta.nextacademy.com/api/v1/users") // default
+      .get("https://insta.nextacademy.com/api/v1/users")
       // .get("http://localhost:5000/api/v1/users/show") // self-made (flask run nextagram API)
       .then(result => {
         this.setState({
@@ -38,16 +39,15 @@ class App extends React.Component {
       .catch(error => console.log(error));
   }
 
-  // Function for old user to log in
-  loginUser = (oldUser, oldPassword) => {
+  loginUser = (username, password) => {
     axios
       .post("https://insta.nextacademy.com/api/v1/login", {
-        username: oldUser,
-        password: oldPassword
+        username: username,
+        password: password
       })
       .then(result => {
-        let JWT = result.data.auth_token;
-        localStorage.setItem("userToken", JWT);
+        let authToken = result.data.auth_token;
+        localStorage.setItem("authToken", authToken);
         localStorage.setItem("userData", JSON.stringify(result.data.user));
 
         this.setState(
@@ -65,7 +65,6 @@ class App extends React.Component {
       });
   };
 
-  // Function for new sign up user
   signUpNewUser = (newUserName, newEmail, newPassWord) => {
     axios
       .post("https://insta.nextacademy.com/api/v1/users/", {
@@ -74,8 +73,8 @@ class App extends React.Component {
         password: newPassWord
       })
       .then(result => {
-        let JWT = result.data.auth_token;
-        localStorage.setItem("userToken", JWT);
+        let authToken = result.data.auth_token;
+        localStorage.setItem("authToken", authToken);
         localStorage.setItem("userData", JSON.stringify(result.data.user));
         this.setState(
           {
@@ -89,6 +88,12 @@ class App extends React.Component {
       .catch(error => {
         console.log(error.response);
       });
+  };
+
+  handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
+    return (window.location = "/");
   };
 
   render() {
@@ -99,14 +104,18 @@ class App extends React.Component {
 
     return (
       <>
-        <Navbar />
+        <Navbar handleLogout={this.handleLogout} />
         <div className="App-header">
           <Switch>
             <Route
               exact
               path="/"
               component={() => {
-                return <HomePage childUsers={users} />;
+                if (localStorage.getItem("authToken")) {
+                  return <HomePage childUsers={users} />;
+                } else {
+                  return <LandingPage />;
+                }
               }}
             />
             <Route
