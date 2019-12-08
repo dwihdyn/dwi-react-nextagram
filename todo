@@ -5,10 +5,13 @@
 - proper signup -> login -> homepage (show all) -> your profile (blank) (done)
 - create page does not exist, try go to /dkbdkcdsi (done)
 
+
 - pop up warning when user type in non-existing user , tried using <UncontrolledAlert> reactstrap
 - have upload button everywhere, except on UploadPage
 - able to upload picture
 
 
-
+nice to have
+- loading page to be middle & dark background
+- fix login & signup page
 - do styling LAST

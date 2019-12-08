@@ -27,6 +27,9 @@ class NavBar extends React.Component {
                   <NavLink href="/profile">My Profile</NavLink>
                 </NavItem>
                 <NavItem>
+                  <NavLink href="/uploadpage">Upload</NavLink>
+                </NavItem>
+                <NavItem>
                   <NavLink onClick={this.props.handleLogout} href="/">
                     Logout
                   </NavLink>
