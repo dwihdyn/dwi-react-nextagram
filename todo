@@ -2,11 +2,11 @@
 - clean code (done)
 - clear ALL comment, bc i cant even read the code (done)
 - better naming convention to all states (done)
-
-
+- proper signup -> login -> homepage (show all) -> your profile (blank) (done)
+- create page does not exist, try go to /dkbdkcdsi (done)
 
 - pop up warning when user type in non-existing user , tried using <UncontrolledAlert> reactstrap
-- proper signup -> login -> homepage (show all) -> your profile (blank)
+- have upload button everywhere, except on UploadPage
 - able to upload picture
 
 

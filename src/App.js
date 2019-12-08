@@ -12,6 +12,8 @@ import LoginPage from "./pages/LoginPage";
 import LandingPage from "./pages/LandingPage";
 import MyProfilePage from "./pages/MyProfilePage";
 import PageNotFound from "./pages/PageNotFound";
+import UploadPage from "./pages/UploadPage";
+import UploadButton from "./components/UploadButton";
 
 class App extends React.Component {
   state = {
@@ -24,14 +26,14 @@ class App extends React.Component {
 
   componentDidMount() {
     // store all current user info into currentUser state
-    if (localStorage.getItem("userData")) {
+    let user = localStorage.getItem("userData");
+    if ((user = JSON.parse(user))) {
       this.setState({
-        currentUser: {
-          ...JSON.parse(localStorage.getItem("userData")),
-          loggedIn: true
-        }
+        currentUser: { ...user, loggedIn: true }
       });
     }
+    console.log(this.props.location);
+    console.log(this.state.currentUser.loggedIn);
 
     axios
       .get("https://insta.nextacademy.com/api/v1/users")
@@ -158,9 +160,21 @@ class App extends React.Component {
               )}
             />
             <Route path="/profile" component={() => <MyProfilePage />} />
+            <Route
+              path="/uploadpage"
+              component={() => {
+                return <UploadPage />;
+              }}
+            />
+
+            {/* Redirect user from going to route that never existed */}
             <Route path="/whrUgoing" component={() => <PageNotFound />} />
             <Redirect from="*" to="/whrUgoing" />
           </Switch>
+          {/* {this.state.currentUser.loggedIn &&
+          this.props.location.pathname !== "/uploadpage" ? (
+            <UploadButton />
+          ) : null} */}
         </div>
       </>
     );
