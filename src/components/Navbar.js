@@ -21,7 +21,7 @@ class NavBar extends React.Component {
           <NavbarBrand href="/">Nextagram</NavbarBrand>
 
           <Nav>
-            {this.props.loggedIn ? (
+            {localStorage.getItem("authToken") ? (
               <>
                 <NavItem>
                   <NavLink href="/profile">My Profile</NavLink>

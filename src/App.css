@@ -21,31 +21,34 @@
   color: #09d3ac;
 }
 
+/* Homepage */
 .each-user-name {
   color: #282c34;
   text-align: center;
 }
 
+/* Navbar */
 .top-navbar {
   background-color: #282c34;
   color: white;
 }
 
+/* Loading */
 .loading {
   background-color: #282c34;
-  display: inline;
-  margin-left: 0 auto;
-  margin-right: 0 auto;
-  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Upload button that will be at bottom right, everywhere */
 .upload-button-container {
   position: fixed;
   height: 15vh;
   width: 15vh;
   right: 45px;
   bottom: 35px;
-  background-color: #282c34;
+  background-color: #faebefff;
 
   border-radius: 50%;
   display: flex;
@@ -57,4 +60,10 @@
   position: absolute;
   height: 10vh;
   width: 10vh;
+}
+
+/* Upload Form */
+#uploadHandler {
+  overflow: hidden;
+  border: 1px solid;
 }

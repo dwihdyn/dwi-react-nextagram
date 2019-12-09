@@ -19,7 +19,7 @@ class App extends React.Component {
   state = {
     users: [],
     loading: true,
-    currentUser: { loggedIn: false },
+    currentUser: ``,
     setAlarm: false,
     errorMessage: false
   };
@@ -29,11 +29,10 @@ class App extends React.Component {
     let user = localStorage.getItem("userData");
     if ((user = JSON.parse(user))) {
       this.setState({
-        currentUser: { ...user, loggedIn: true }
+        currentUser: { ...user }
       });
     }
-    console.log(this.props.location);
-    console.log(this.state.currentUser.loggedIn);
+    // console.log(this.props.location);
 
     axios
       .get("https://insta.nextacademy.com/api/v1/users")
@@ -61,7 +60,7 @@ class App extends React.Component {
 
         this.setState(
           {
-            currentUser: { ...res.data.user, loggedIn: true }
+            currentUser: { ...res.data.user }
           },
 
           () => {
@@ -90,7 +89,7 @@ class App extends React.Component {
         localStorage.setItem("userData", JSON.stringify(res.data.user));
         this.setState(
           {
-            currentUser: { ...res.data.user, loggedIn: true }
+            currentUser: { ...res.data.user }
           },
           () => {
             this.props.history.push("/");
@@ -106,7 +105,7 @@ class App extends React.Component {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userData");
     this.setState({
-      currentUser: { loggedIn: false }
+      currentUser: ``
     });
     return (window.location = "/");
   };
@@ -126,7 +125,6 @@ class App extends React.Component {
     return (
       <>
         <Navbar
-          loggedIn={this.state.currentUser.loggedIn}
           handleLogout={this.handleLogout}
           errorMessage={errorMessage}
           clearError={this.clearError}
