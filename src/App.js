@@ -171,7 +171,10 @@ class App extends React.Component {
             <Route path="/whrUgoing" component={() => <PageNotFound />} />
             <Redirect from="*" to="/whrUgoing" />
           </Switch>
-          {this.props.location.pathname !== "/uploadpage" && <UploadButton />}
+
+          {/* show UploadButton if there is authToken AND not in /uploadpage */}
+          {localStorage.getItem("authToken") &&
+            this.props.location.pathname !== "/uploadpage" && <UploadButton />}
         </div>
       </>
     );

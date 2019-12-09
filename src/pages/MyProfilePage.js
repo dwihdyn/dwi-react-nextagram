@@ -45,9 +45,7 @@ class MyProfilePage extends React.Component {
           #{myData.id} : {myData.username}{" "}
         </h4>
 
-        {Array.isArray(images) ? (
-          `Feed your gram now!`
-        ) : (
+        {Array.isArray(images) && images.length ? (
           <div className="d-flex flex-wrap w-75" style={{ height: "100%" }}>
             {images.map((image, index) => {
               return (
@@ -57,6 +55,8 @@ class MyProfilePage extends React.Component {
               );
             })}
           </div>
+        ) : (
+          `Feed your gram now!`
         )}
       </>
     );

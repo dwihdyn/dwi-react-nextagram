@@ -20,13 +20,15 @@ class HomePage extends React.Component {
                     src={user.profileImage}
                     alt={user.username}
                   />
-                  <Link
-                    className="each-user-name"
-                    name={user.id}
-                    to={`/users/${user.id}`}
-                  >
-                    {user.username}{" "}
-                  </Link>
+                  <div className="d-flex justify-content-center">
+                    <Link
+                      className="each-user-name"
+                      name={user.id}
+                      to={`/users/${user.id}`}
+                    >
+                      {user.username}{" "}
+                    </Link>
+                  </div>
                 </Col>
                 <Col style={{ height: "300px" }}>
                   <UserImages userId={user.id} />
