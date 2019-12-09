@@ -81,12 +81,6 @@ class SignUpForm extends React.Component {
       emailValid = true;
     }
 
-    // strong password : have lowercase, have uppercase, have number, minimal 8 characted
-    let passWordStrong;
-    if (/[a-zA-Z0-9]{8,}/.test(passWord)) {
-      passWordStrong = true;
-    }
-
     let isFormComplete;
     if (usernameValid && emailValid && passWord === reEnterPassWord) {
       isFormComplete = true;

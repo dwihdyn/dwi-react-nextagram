@@ -2,56 +2,54 @@ import React from "react";
 
 class LoginForm extends React.Component {
   state = {
-    userName: ``,
-    passWord: ``
+    username: ``,
+    password: ``
   };
 
-  // function that sends the user credentials to app.js
-  handleSubmitOldUser = e => {
+  submitDataToAppJs = e => {
     e.preventDefault();
-    const { userName, passWord } = this.state;
-    // sends username & password data to app.js
-    this.props.loginUser(userName, passWord);
+    const { username, password } = this.state;
+    this.props.handleLogin(username, password);
   };
 
+  // handle both username & password onChange
   handleTypedInData = (name, value) => {
     this.setState({
-      [name]: value // [name] will change to `userName` when user entering data in username, and same idea for `passWord`
+      [name]: value
     });
   };
 
   render() {
-    const { userName, passWord } = this.state;
+    const { username, password } = this.state;
     return (
       <>
         <h1 className="text-center">Login Form : Your Account</h1>
-        {/* direct form submit to app.js using handleSubmitOldUser */}
-        <form onSubmit={e => this.handleSubmitOldUser(e)}>
+
+        <form onSubmit={e => this.submitDataToAppJs(e)}>
           <input
             className="form-control"
             type="text"
-            name="userName" // must be same as your state name. to let computer know, that this input is the `userName`
+            name="username"
             placeholder="Enter username ...."
-            value={userName}
+            value={username}
             onChange={e => {
-              this.handleTypedInData(e.target.name, e.target.value); // update to state when event is happening (user typing input)
+              this.handleTypedInData(e.target.name, e.target.value);
             }}
           />
           <input
             className="form-control"
             type="password"
-            name="passWord" // must be same as your state name. to let computer know, that this input is the `passWord`
+            name="password"
             placeholder="Enter password ...."
-            value={passWord}
+            value={password}
             onChange={e => {
-              this.handleTypedInData(e.target.name, e.target.value); // update to state when event is happening (user typing input)
+              this.handleTypedInData(e.target.name, e.target.value);
             }}
           />
           <button>Login</button>
         </form>
 
-        {/* want to direct user to SignUpForm page when clicked the link below  */}
-        <button className="btn btn-link" onClick={this.props.handleLogin}>
+        <button className="btn btn-link" onClick={this.props.signupOrLogin}>
           {" "}
           No account ? sign up now!{" "}
         </button>

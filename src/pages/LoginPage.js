@@ -9,7 +9,7 @@ class LoginPage extends React.Component {
   };
 
   // function to change the isLogin to true/false
-  handleLogin = () => {
+  signupOrLogin = () => {
     this.setState({
       isLogin: !this.state.isLogin
     });
@@ -22,12 +22,12 @@ class LoginPage extends React.Component {
         <Container>
           {isLogin ? (
             <LoginForm
-              handleLogin={this.handleLogin}
-              loginUser={this.props.loginUser}
+              signupOrLogin={this.signupOrLogin}
+              handleLogin={this.props.handleLogin}
             />
           ) : (
             <SignUpForm
-              handleLogin={this.handleLogin}
+              signupOrLogin={this.signupOrLogin}
               signUpNewUser={this.props.signUpNewUser}
             />
           )}

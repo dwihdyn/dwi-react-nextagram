@@ -1,58 +1,66 @@
 import React from "react";
 import axios from "axios";
-import "./App.css";
+
 import { ReactComponent as Loader } from "./Spinner-1s-200px.svg";
+import { Route, Switch, withRouter, Redirect } from "react-router-dom";
+
+import "./App.css";
 import HomePage from "./pages/HomePage";
-import { Route, Switch, withRouter } from "react-router-dom";
 import UserProfilePage from "./pages/UserProfilePage";
 import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
+import LandingPage from "./pages/LandingPage";
+import MyProfilePage from "./pages/MyProfilePage";
+import PageNotFound from "./pages/PageNotFound";
+import UploadPage from "./pages/UploadPage";
+import UploadButton from "./components/UploadButton";
 
 class App extends React.Component {
   state = {
     users: [],
     loading: true,
-    currentUser: { loggedIn: false }
+    currentUser: ``,
+    setAlarm: false,
+    errorMessage: false
   };
 
   componentDidMount() {
-    // Ensure current user still logged in when browser are refrshed/closed
-    let checkLoggedInOrNot = localStorage.getItem("userData");
-    if (checkLoggedInOrNot === true) {
-      checkLoggedInOrNot = JSON.parse(checkLoggedInOrNot);
+    // store all current user info into currentUser state
+    let user = localStorage.getItem("userData");
+    if ((user = JSON.parse(user))) {
       this.setState({
-        currentUser: { ...checkLoggedInOrNot, loggedIn: true }
+        currentUser: { ...user }
       });
     }
+    // console.log(this.props.location);
 
-    // Get all users data
     axios
-      .get("https://insta.nextacademy.com/api/v1/users") // default
+      .get("https://insta.nextacademy.com/api/v1/users")
       // .get("http://localhost:5000/api/v1/users/show") // self-made (flask run nextagram API)
-      .then(result => {
+      .then(res => {
         this.setState({
-          users: [...result.data],
-          loading: false
+          users: [...res.data],
+          loading: false,
+          errorMessage: false
         });
       })
-      .catch(error => console.log(error));
+      .catch(err => console.log(err));
   }
 
-  // Function for old user to log in
-  loginUser = (oldUser, oldPassword) => {
+  handleLogin = (username, password) => {
     axios
       .post("https://insta.nextacademy.com/api/v1/login", {
-        username: oldUser,
-        password: oldPassword
+        username: username,
+        password: password
       })
-      .then(result => {
-        let JWT = result.data.auth_token;
-        localStorage.setItem("userToken", JWT);
-        localStorage.setItem("userData", JSON.stringify(result.data.user));
+      .then(res => {
+        let authToken = res.data.auth_token;
+        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("userData", JSON.stringify(res.data.user));
 
         this.setState(
           {
-            currentUser: { ...result.data.user, loggedIn: true }
+            currentUser: { ...res.data.user }
           },
 
           () => {
@@ -60,12 +68,14 @@ class App extends React.Component {
           }
         );
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(err => {
+        console.log(err.response);
+        this.setState({
+          errorMessage: true
+        });
       });
   };
 
-  // Function for new sign up user
   signUpNewUser = (newUserName, newEmail, newPassWord) => {
     axios
       .post("https://insta.nextacademy.com/api/v1/users/", {
@@ -73,47 +83,68 @@ class App extends React.Component {
         email: newEmail,
         password: newPassWord
       })
-      .then(result => {
-        let JWT = result.data.auth_token;
-        localStorage.setItem("userToken", JWT);
-        localStorage.setItem("userData", JSON.stringify(result.data.user));
+      .then(res => {
+        let authToken = res.data.auth_token;
+        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("userData", JSON.stringify(res.data.user));
         this.setState(
           {
-            currentUser: { ...result.data.user, loggedIn: true }
+            currentUser: { ...res.data.user }
           },
           () => {
             this.props.history.push("/");
           }
         );
       })
-      .catch(error => {
-        console.log(error.response);
+      .catch(err => {
+        console.log(err.response);
       });
   };
 
+  handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
+    this.setState({
+      currentUser: ``
+    });
+    return (window.location = "/");
+  };
+
+  clearError = e => {
+    this.setState({
+      error: e
+    });
+  };
+
   render() {
-    let { users, loading } = this.state;
+    let { users, loading, errorMessage } = this.state;
     if (loading) {
       return <Loader className="loading" alt="loading gif" />;
     }
 
     return (
       <>
-        <Navbar />
+        <Navbar
+          handleLogout={this.handleLogout}
+          errorMessage={errorMessage}
+          clearError={this.clearError}
+        />
         <div className="App-header">
           <Switch>
             <Route
               exact
               path="/"
               component={() => {
-                return <HomePage childUsers={users} />;
+                if (localStorage.getItem("authToken")) {
+                  return <HomePage users={users} />;
+                } else {
+                  return <LandingPage />;
+                }
               }}
             />
             <Route
               path="/users/:id"
-              component={props => (
-                <UserProfilePage childUsers={users} {...props} />
-              )}
+              component={props => <UserProfilePage users={users} {...props} />}
             />
 
             <Route
@@ -122,11 +153,26 @@ class App extends React.Component {
                 <LoginPage
                   {...props}
                   signUpNewUser={this.signUpNewUser}
-                  loginUser={this.loginUser}
+                  handleLogin={this.handleLogin}
                 />
               )}
             />
+            <Route path="/profile" component={() => <MyProfilePage />} />
+            <Route
+              path="/uploadpage"
+              component={() => {
+                return <UploadPage />;
+              }}
+            />
+
+            {/* Redirect user from going to route that never existed */}
+            <Route path="/whrUgoing" component={() => <PageNotFound />} />
+            <Redirect from="*" to="/whrUgoing" />
           </Switch>
+
+          {/* show UploadButton if there is authToken AND not in /uploadpage */}
+          {localStorage.getItem("authToken") &&
+            this.props.location.pathname !== "/uploadpage" && <UploadButton />}
         </div>
       </>
     );

@@ -1,0 +1,18 @@
+- branch out to development (done)
+- clean code (done)
+- clear ALL comment, bc i cant even read the code (done)
+- better naming convention to all states (done)
+- proper signup -> login -> homepage (show all) -> your profile (blank) (done)
+- create page does not exist, try go to /dkbdkcdsi (done)
+- have upload button everywhere, except on UploadPage (done)
+- able to upload picture (done)
+
+
+- pop up warning when user type in non-existing user , tried using <UncontrolledAlert> reactstrap
+
+
+
+nice to have
+- loading page to be middle & dark background
+- fix login & signup page
+- do styling LAST

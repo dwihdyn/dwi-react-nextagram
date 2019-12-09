@@ -8,21 +8,17 @@ class UserImages extends React.Component {
     images: [],
     loading: true
   };
-  // load the selected user profile pic using API
+
   componentDidMount() {
-    // console.log(this.props);
     axios
       .get(
         `https://insta.nextacademy.com/api/v1/images?userId=${this.props.userId}`
       )
       .then(resultFromLink => {
-        console.log(resultFromLink); // good practice, to help visualise the output
         this.setState({
           images: resultFromLink.data,
           loading: false
         });
-
-        // console.log(resultFromLink.data);
       });
   }
 
