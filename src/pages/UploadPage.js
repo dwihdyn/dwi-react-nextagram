@@ -38,13 +38,9 @@ class UploadPage extends React.Component {
     });
     // debugger;
     axios
-      .post(
-        "https://insta.nextacademy.com/api/v1/images/",
-        {
-          headers: headers
-        },
-        formData
-      )
+      .post("https://insta.nextacademy.com/api/v1/images/", formData, {
+        headers: headers
+      })
       .then(res => {
         if (res.data.success) {
           this.setState({
