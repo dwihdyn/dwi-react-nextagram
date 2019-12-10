@@ -13,6 +13,7 @@ class LoginPage extends React.Component {
     this.setState({
       isLogin: !this.state.isLogin
     });
+    console.log(this.state.isLogin);
   };
 
   render() {
