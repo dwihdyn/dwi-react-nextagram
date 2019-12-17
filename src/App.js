@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { ReactComponent as Loader } from "./Spinner-1s-200px.svg";
 import { Route, Switch, withRouter, Redirect } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 import "./App.css";
 import HomePage from "./pages/HomePage";
@@ -20,8 +21,7 @@ class App extends React.Component {
     users: [],
     loading: true,
     currentUser: ``,
-    setAlarm: false,
-    errorMessage: false
+    setAlarm: false
   };
 
   componentDidMount() {
@@ -40,8 +40,7 @@ class App extends React.Component {
       .then(res => {
         this.setState({
           users: [...res.data],
-          loading: false,
-          errorMessage: false
+          loading: false
         });
       })
       .catch(err => console.log(err));
@@ -67,11 +66,25 @@ class App extends React.Component {
             this.props.history.push("/");
           }
         );
+        toast.success("Logged in Successfully!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        });
       })
       .catch(err => {
         console.log(err.response);
-        this.setState({
-          errorMessage: true
+
+        toast.error("Invalid Username/Password !", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
         });
       });
   };
@@ -110,25 +123,16 @@ class App extends React.Component {
     return (window.location = "/");
   };
 
-  clearError = e => {
-    this.setState({
-      error: e
-    });
-  };
-
   render() {
-    let { users, loading, errorMessage } = this.state;
+    let { users, loading } = this.state;
     if (loading) {
       return <Loader className="loading" alt="loading gif" />;
     }
 
     return (
       <>
-        <Navbar
-          handleLogout={this.handleLogout}
-          errorMessage={errorMessage}
-          clearError={this.clearError}
-        />
+        <ToastContainer />
+        <Navbar handleLogout={this.handleLogout} />
         <div className="App-header">
           <Switch>
             <Route

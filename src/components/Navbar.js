@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledAlert
-} from "reactstrap";
+import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
 import "../App.css";
 
 class NavBar extends React.Component {
@@ -42,11 +35,6 @@ class NavBar extends React.Component {
             )}
           </Nav>
         </Navbar>
-        {this.props.errorMessage ? (
-          <UncontrolledAlert color="danger" toggle={this.onDismiss}>
-            Invalid credential. Please check your username/password{" "}
-          </UncontrolledAlert>
-        ) : null}
       </div>
     );
   }
