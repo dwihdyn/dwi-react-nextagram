@@ -78,7 +78,7 @@ class UploadPage extends React.Component {
                 this.handleFile(e);
               }}
             ></Input>
-            <label for="uploadHandler">
+            <label htmlFor="uploadHandler">
               {previewImage ? (
                 <img
                   src={previewImage}
