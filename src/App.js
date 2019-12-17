@@ -143,11 +143,13 @@ class App extends React.Component {
               }}
             />
             <Route
+              exact
               path="/users/:id"
               component={props => <UserProfilePage users={users} {...props} />}
             />
 
             <Route
+              exact
               path="/login"
               component={props => (
                 <LoginPage
@@ -157,8 +159,9 @@ class App extends React.Component {
                 />
               )}
             />
-            <Route path="/profile" component={() => <MyProfilePage />} />
+            <Route exact path="/profile" component={() => <MyProfilePage />} />
             <Route
+              exact
               path="/uploadpage"
               component={() => {
                 return <UploadPage />;
@@ -166,7 +169,7 @@ class App extends React.Component {
             />
 
             {/* Redirect user from going to route that never existed */}
-            <Route path="/whrUgoing" component={() => <PageNotFound />} />
+            <Route exact path="/whrUgoing" component={() => <PageNotFound />} />
             <Redirect from="*" to="/whrUgoing" />
           </Switch>
 
