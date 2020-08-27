@@ -1,8 +1,12 @@
-Check it out in development branch:
-username : jamaltan31!!
-password : jamaltan31
+# Nextagram
 
-==========================================================================
+### Instagram clone that is build using React framework
+
+Check it by clicking [here](https://dwi-nextagram.netlify.app/) and login using sample credential below:
+- username : jamaltan31!!
+- password : jamaltan31
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
